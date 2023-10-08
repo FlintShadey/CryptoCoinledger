@@ -1,0 +1,7 @@
+The Gala, you have to set the known date and the program will just count backward daily
+
+The FLUX is two steps, you can capture the FLUX amounts, but then have to run fluxDateCapture seperately and input that into the csv editor
+
+the POKT is CSV to CSV
+
+Coinledger requires csv to have columns "Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"
