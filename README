@@ -6,8 +6,9 @@ The Gala:
   it will stil have problems with floats
 
 The FLUX is two steps, you can capture the FLUX amounts, but then have to run fluxDateCapture seperately and input that into the csv editor
-  the PDF method works fine for this 
+  navigate to the node -> explorer copy the the month into a PDF  (the PDF method works fine for this )
   use google sheets
+  then run the date capture
 
 the POKT is CSV to CSV
 
