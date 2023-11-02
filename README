@@ -1,11 +1,13 @@
 The Gala:
   copy the data to PDF (open in preview is fine)
-  collect the text into a rtfd file 
+  collect the text into a rtfd file (later change this to txt file)
   clean  up the data
   then you have to set the known date and the program will just count backward daily
-it will stil have problems with floats
+  it will stil have problems with floats
 
 The FLUX is two steps, you can capture the FLUX amounts, but then have to run fluxDateCapture seperately and input that into the csv editor
+  the PDF method works fine for this 
+  use google sheets
 
 the POKT is CSV to CSV
 
