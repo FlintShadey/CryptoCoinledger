@@ -1,37 +1,48 @@
+import os
+import re
+import datetime
 import csv
-from datetime import datetime
+from striprtf.striprtf import rtf_to_text
 
-# Prompt the user for the path to the CSV file
-csv_path = input("Enter the path to the CSV file: ")
+def extract_gala_distributions(rtfd_path, output_csv_path):
+    # Read the RTF file from the RTFD bundle
+    rtfd_bundle = os.listdir(rtfd_path)
+    rtf_file = [file for file in rtfd_bundle if file.endswith('.rtf')][0]
+    with open(os.path.join(rtfd_path, rtf_file), 'r') as file:
+        rtf_content = file.read()
 
-# Read the CSV file
-with open(csv_path, 'r', encoding='utf-8-sig') as csv_file:
-    csv_reader = csv.DictReader(csv_file)
+    # Convert the RTF content to plain text
+    text = rtf_to_text(rtf_content)
     
-    # Trim spaces from column names
-    csv_reader.fieldnames = [name.strip() for name in csv_reader.fieldnames]
+    # Initialize the data list
+    data = []
+    
+    # Prompt the user for the starting date
+    date_input = input("Please enter the starting date (MM/DD/YYYY): ")
+    month, day, year = map(int, date_input.split('/'))
+    current_date = datetime.datetime(year, month, day)
+    
+    # Extract the pattern for GALA amount
+    pattern_gala = r"You received ([\d,]+) GALA"
+    matches_gala = re.findall(pattern_gala, text)
+    
+    # Add the matches to the data list and decrement the date for each match
+    for amount in matches_gala:
+        formatted_date = current_date.strftime("%m/%d/%Y 21:%M:%S")
+        data.append([formatted_date, "", "", "", "GALA", amount.replace(',', ''), "", "", "Income", "", ""])
+        current_date -= datetime.timedelta(days=1)
 
-    # Prepare to write to the new CSV file
-    with open('/Users/flint/Desktop/POKT output.csv', 'w', newline='') as output_file:
-        fieldnames = ["Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"]
-        csv_writer = csv.DictWriter(output_file, fieldnames=fieldnames)
-        csv_writer.writeheader()
 
-        for row in csv_reader:
-            # Convert the date column
-            date_format = "%m/%d/%Y %H:%M:%S"
-            date_str = datetime.strptime(row['Date'], '%Y-%m-%d %H:%M:%S').strftime(date_format)
+    
+    # Write the data to a CSV file
+    with open(output_csv_path, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"])  # header
+        writer.writerows(data)
 
-            # Prepare the new row
-            new_row = {
-                "Date (UTC)": date_str,
-                "Asset Received": "POKT",
-                "Type": "Income"
-            }
+# Prompt the user for the path of the RTFD bundle
+rtfd_path_input = input("Please enter the path of the RTFD file: ")
+output_csv_path = '/Users/flint/Desktop/output.csv'  # You can modify this if you want to prompt for the output path as well
 
-            if row["Transaction Type"] == "Rewards Rollover":
-                new_row["Amount Received"] = row["Amount"]
-
-            csv_writer.writerow(new_row)
-
-print("New CSV file saved to /Users/flint/Desktop/POKT output.csv")
+# Call the function
+extract_gala_distributions(rtfd_path_input, output_csv_path)
