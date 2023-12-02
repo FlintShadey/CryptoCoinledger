@@ -1,15 +1,20 @@
 The Gala:
-  copy the data to PDF (open in preview is fine)
-  collect the text into a rtfd file (later change this to txt file)
-  clean  up the data
+  select the data and paste into a txt file 
+  clean  up the data in sheets only (not numbers)
+
   then you have to set the known date and the program will just count backward daily
-  it will stil have problems with floats
+  it will still have problems with floats
+---------------------------------
 
 The FLUX is two steps, you can capture the FLUX amounts, but then have to run fluxDateCapture seperately and input that into the csv editor
-  navigate to the node -> explorer copy the the month into a PDF  (the PDF method works fine for this )
-  use google sheets
+  navigate to the node -> explorer copy Text into a txt file run the script
+  
   then run the date capture
 
-the POKT is CSV to CSV
+  The text date capture has not been tested yet
 
+When the text is available, it will just print the dates in the terminal, this needs to be combined with the flux CSV output script
+----------------------------------
+the POKT is CSV to CSV
+----------------
 Coinledger requires csv to have columns "Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"
