@@ -1,46 +1,45 @@
-import os
-import re
-import datetime
 import csv
+import os
+import datetime
 
-def extract_gala_distributions(txt_path, output_csv_path):
-    # Read the text file
-    with open(txt_path, 'r') as file:
-        text = file.read()
-    
-    # Initialize the data list
-    data = []
-    
-    # Prompt the user for the starting date
-    date_input = input("Please enter the starting date (MM/DD/YYYY): ")
-    month, day, year = map(int, date_input.split('/'))
-    current_date = datetime.datetime(year, month, day)
-    
-    # Extract the pattern for GALA amount
-    pattern_gala = r"You received ([\d,]+) GALA"
-    matches_gala = re.findall(pattern_gala, text)
-    
-    # Add the matches to the data list and decrement the date for each match
-    for amount in matches_gala:
-        formatted_date = current_date.strftime("%m/%d/%Y 21:%M:%S")
-        data.append([formatted_date, "", "", "", "GALA", amount.replace(',', ''), "", "", "Income", "", ""])
-        current_date -= datetime.timedelta(days=1)
+def extract_gala_distributions(csv_path, output_csv_path):
+    # Open the CSV file
+    with open(csv_path, 'r', newline='') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+
+        # Initialize the data list
+        data = []
+
+        # Iterate over the rows in the CSV file
+        for row in reader:
+            description, date, quantity, currency, account_flow, network, *rest = row
+
+            # Check if the currency is GALA[GC]
+            if currency == "GALA[GC]":
+                # Format the date
+                date_obj = datetime.datetime.fromisoformat(date)
+                formatted_date = date_obj.strftime("%m/%d/%Y %H:%M:%S")
+
+                # Append the necessary information to the data list
+                data.append([formatted_date, "", "", "", currency, quantity, "", "", account_flow, description, ""])
 
     # Write the data to a CSV file
     with open(output_csv_path, 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"])  # header
+        # Write the header
+        writer.writerow(["Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"])
+        # Write the data rows
         writer.writerows(data)
 
+# Get the CSV path input from the user
+csv_path_input = input("Please enter the path of the CSV file: ")
 
-# Prompt the user for the path of the text file
-txt_path_input = input("Please enter the path of the text file: ")
-
-# Set the output CSV path to 'GALA_output.csv' in the same directory as the input text file
-output_csv_dir = os.path.dirname(txt_path_input)
+# Set the output CSV path
+output_csv_dir = os.path.dirname(csv_path_input)
 output_csv_path = os.path.join(output_csv_dir, 'GALA_output.csv')
 
 # Call the function
-extract_gala_distributions(txt_path_input, output_csv_path)
+extract_gala_distributions(csv_path_input, output_csv_path)
 
-print("New CSV file saved to Desktop - GALA output.csv")
+print("New CSV file saved to: " + output_csv_path)
