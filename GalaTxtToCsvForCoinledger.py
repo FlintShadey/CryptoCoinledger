@@ -13,7 +13,7 @@ def extract_gala_distributions(csv_path, output_csv_path):
 
         # Iterate over the rows in the CSV file
         for row in reader:
-            description, date, quantity, currency, account_flow, network, *rest = row
+            description, date, quantity, currency, *rest = row
 
             # Check if the currency is GALA[GC]
             if currency == "GALA[GC]":
@@ -21,15 +21,17 @@ def extract_gala_distributions(csv_path, output_csv_path):
                 date_obj = datetime.datetime.fromisoformat(date)
                 formatted_date = date_obj.strftime("%m/%d/%Y %H:%M:%S")
 
+                # Set the type to "Mining"
+                type_value = "Mining"
+                currency = "GALA"
+
                 # Append the necessary information to the data list
-                data.append([formatted_date, "", "", "", currency, quantity, "", "", account_flow, description, ""])
+                data.append([formatted_date, "", "", "", currency, quantity, "", "", type_value, description, ""])
 
     # Write the data to a CSV file
     with open(output_csv_path, 'w', newline='') as file:
         writer = csv.writer(file)
-        # Write the header
         writer.writerow(["Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"])
-        # Write the data rows
         writer.writerows(data)
 
 # Get the CSV path input from the user
