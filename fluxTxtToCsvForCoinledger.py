@@ -11,23 +11,17 @@ def extract_flux_distributions_from_text(txt_path, output_csv_path):
     # Initialize the data list
     data = []
     
-    # Extract the datetime from the text using regex
-    pattern_datetime = r"Mined (\w{3} \d{1,2}, \d{4} \d{1,2}:\d{2}:\d{2})"
-    match_datetime = re.search(pattern_datetime, text)
+    # Extract the datetime and FLUX amount from the text using regex
+    pattern = r"Mined (\w{3} \d{1,2}, \d{4} \d{1,2}:\d{2}:\d{2} [APM]{2}).+?CONFIRMATIONS (\d+\.\d+)"
+    matches = re.finditer(pattern, text, re.DOTALL)
 
-    if match_datetime:
-        extracted_datetime_str = match_datetime.group(1)
+    for match in matches:
+        extracted_datetime_str, flux_amount = match.groups()
         # Parse the extracted datetime string
-        current_date = datetime.datetime.strptime(extracted_datetime_str, "%b %d, %Y %I:%M:%S")
-        
-        # Extract the pattern for FLUX amount
-        pattern_flux = r"TIONS (\d+\.\d+)"
-        matches_flux = re.findall(pattern_flux, text)
-        
-        # Add the matches to the data list using the captured date
-        for amount in matches_flux:
-            formatted_date = current_date.strftime("%m/%d/%Y %H:%M:%S")
-            data.append([formatted_date, "", "", "", "FLUX", amount, "", "", "Income", "", ""])
+        current_date = datetime.datetime.strptime(extracted_datetime_str, "%b %d, %Y %I:%M:%S %p")
+
+        formatted_date = current_date.strftime("%m/%d/%Y %H:%M:%S")
+        data.append([formatted_date, "", "", "", "FLUX", flux_amount, "", "", "Mining", "", ""])
 
     # Write the data to a CSV file
     with open(output_csv_path, 'w', newline='') as file:
@@ -45,4 +39,4 @@ output_csv_path = os.path.join(output_csv_dir, 'FLUX_output.csv')
 # Call the function
 extract_flux_distributions_from_text(txt_path_input, output_csv_path)
 
-print("New CSV file saved to Desktop  - FLUX output.csv")
+print("New CSV file saved to: " + output_csv_path)

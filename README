@@ -1,9 +1,7 @@
 The Gala:
-  select the data and paste into a txt file 
-  clean  up the data in sheets only (not numbers)
+is now Csv to csv ; 
 
-  then you have to set the known date and the program will just count backward daily
-  it will still have problems with floats
+download to desktop; get relative path
 ---------------------------------
 
 The FLUX is two steps, you can capture the FLUX amounts, but then have to run fluxDateCapture seperately and input that into the csv editor
