@@ -3,15 +3,9 @@ is now Csv to csv ;
 
 download to desktop; get relative path
 ---------------------------------
+copy the transactions to a txt file
 
-The FLUX is two steps, you can capture the FLUX amounts, but then have to run fluxDateCapture seperately and input that into the csv editor
-  navigate to the node -> explorer copy Text into a txt file run the script
-  
-  then run the date capture
 
-  The text date capture has not been tested yet
-
-When the text is available, it will just print the dates in the terminal, this needs to be combined with the flux CSV output script
 ----------------------------------
 the POKT is CSV to CSV
 ----------------
