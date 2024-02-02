@@ -1,10 +1,24 @@
-The Gala:
-is now Csv to csv ; 
 
-download to desktop; get relative path
+
+ only open one script at a time so that you don't confuse yourself
+-------------------------------------
+
+GALA
+
+
+changes every month *eyeroll
+just select the distributions and save to a txt file 
+
+
+correct and SAVE the csv file before sending to coinledger
+
 ---------------------------------
-copy the transactions to a txt file
+FLUX 
+when working on FLUX make sure you have the correct wallet.   the distributions are 2.8125  (not 37.5)
 
+I hard coded the 2.8125 .... i dont know how else to parse them
+
+again save the file as CSV before proceeding
 
 ----------------------------------
 the POKT is CSV to CSV

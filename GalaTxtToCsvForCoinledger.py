@@ -1,32 +1,36 @@
+import re
+import datetime
 import csv
 import os
-import datetime
 
-def extract_gala_distributions(csv_path, output_csv_path):
-    # Open the CSV file
-    with open(csv_path, 'r', newline='') as file:
-        reader = csv.reader(file)
-        next(reader)  # Skip the header row
+def parse_gala_rewards(txt_path, output_csv_path):
+    # Simplified pattern to capture any line mentioning GALA rewards
+    pattern = r"You received ([\d,\.]+) GALA"
+    
+    # Read the text file
+    with open(txt_path, 'r') as file:
+        text = file.read()
 
-        # Initialize the data list
-        data = []
+    # Find all matches for GALA rewards
+    matches = re.finditer(pattern, text)
 
-        # Iterate over the rows in the CSV file
-        for row in reader:
-            description, date, quantity, currency, *rest = row
+    # Initialize the data list and a counter for days back
+    data = []
+    days_back = 0  # Initialize to 0 to adjust on the first match
 
-            # Check if the currency is GALA[GC]
-            if currency == "GALA[GC]":
-                # Format the date
-                date_obj = datetime.datetime.fromisoformat(date)
-                formatted_date = date_obj.strftime("%m/%d/%Y %H:%M:%S")
+    # Today's date
+    today = datetime.date.today()
 
-                # Set the type to "Mining"
-                type_value = "Mining"
-                currency = "GALA"
-
-                # Append the necessary information to the data list
-                data.append([formatted_date, "", "", "", currency, quantity, "", "", type_value, description, ""])
+    for match in matches:
+        days_back += 1  # Increment for each GALA entry found
+        amount = match.group(1).replace(',', '')  # Remove commas
+        
+        date = today - datetime.timedelta(days=days_back)
+        
+        formatted_date = date.strftime("%m/%d/%Y")  # Assuming date only
+        
+        # Append the necessary information to the data list
+        data.append([formatted_date, "", "", "", "GALA", amount, "", "", "Mining", "", ""])
 
     # Write the data to a CSV file
     with open(output_csv_path, 'w', newline='') as file:
@@ -34,14 +38,13 @@ def extract_gala_distributions(csv_path, output_csv_path):
         writer.writerow(["Date (UTC)", "Platform (Optional)", "Asset Sent", "Amount Sent", "Asset Received", "Amount Received", "Fee Currency (Optional)", "Fee Amount (Optional)", "Type", "Description (Optional)", "TxHash (Optional)"])
         writer.writerows(data)
 
-# Get the CSV path input from the user
-csv_path_input = input("Please enter the path of the CSV file: ")
+# Ask the user for the path of the text file
+txt_path_input = input("Please enter the path of the text file: ")
 
-# Set the output CSV path
-output_csv_dir = os.path.dirname(csv_path_input)
-output_csv_path = os.path.join(output_csv_dir, 'GALA_output.csv')
+# Set the output CSV path to the user's Desktop
+output_csv_path = os.path.join("/Users/flint/Desktop", "gala_rewards_data.csv")
 
 # Call the function
-extract_gala_distributions(csv_path_input, output_csv_path)
+parse_gala_rewards(txt_path_input, output_csv_path)
 
-print("New CSV file saved to: " + output_csv_path)
+print("GALA rewards data has been parsed and saved to:", output_csv_path)
