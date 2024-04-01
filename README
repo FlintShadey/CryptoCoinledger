@@ -10,13 +10,13 @@ changes every month *eyeroll
 just select the distributions and save to a txt file 
 
 
-correct and SAVE the csv file before sending to coinledger
+correct (trim the extra days in numbers)and SAVE the csv file before sending to coinledger
 
 ---------------------------------
 FLUX 
 when working on FLUX make sure you have the correct wallet.   the distributions are 2.8125  (not 37.5)
 
-I hard coded the 2.8125 .... i dont know how else to parse them
+I hard coded the 4.6875 .... i dont know how else to parse them
 
 again save the file as CSV before proceeding
 

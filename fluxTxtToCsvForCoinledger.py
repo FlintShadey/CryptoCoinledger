@@ -21,7 +21,7 @@ def extract_flux_distributions_from_text(txt_path, output_csv_path):
         current_date = datetime.datetime.strptime(extracted_datetime_str, "%b %d, %Y %I:%M:%S %p")
 
         formatted_date = current_date.strftime("%m/%d/%Y %H:%M:%S")
-        data.append([formatted_date, "", "", "", "FLUX", 2.8125, "", "", "Mining", "", ""])
+        data.append([formatted_date, "", "", "", "FLUX", 4.6875, "", "", "Mining", "", ""])
 
     # Write the data to a CSV file
     with open(output_csv_path, 'w', newline='') as file:

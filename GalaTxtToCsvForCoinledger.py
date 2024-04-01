@@ -30,7 +30,7 @@ def parse_gala_rewards(txt_path, output_csv_path):
         formatted_date = date.strftime("%m/%d/%Y")  # Assuming date only
         
         # Append the necessary information to the data list
-        data.append([formatted_date, "", "", "", "GALA", amount, "", "", "Mining", "", ""])
+        data.append([formatted_date, "", "", "", "GALA", amount, "", "", "Mining Income", "", ""])
 
     # Write the data to a CSV file
     with open(output_csv_path, 'w', newline='') as file:
